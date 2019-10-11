@@ -1,0 +1,19 @@
+version: '3'
+services:
+  notebook:
+    build: .
+    env_file: .env
+    ports:
+      - "8576:8888"
+    volumes:
+      - ./:/COMP576
+    entrypoint:
+      - /COMP576/jupyter.sh
+    working_dir: /COMP576
+
+  bash:
+    build: .
+    env_file: .env
+    volumes:
+      - ./:/COMP576
+    entrypoint: /bin/bash
