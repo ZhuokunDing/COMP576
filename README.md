@@ -1,2 +1,2 @@
 # COMP576
-Project for RICE COMP576
+Repository for ELEC/COMP576 Introduction to Deep Learning at Rice
