@@ -43,9 +43,9 @@ class Layer():
         calculate dL/dW and dL/dX given dL/da
         '''
         num_examples = len(self.X)
-        self.dW = self.X.T.dot(da * (self.diff_actFun(self.a)))
-        self.db = np.ones(num_examples).dot(da * (self.diff_actFun(self.a)))
-        self.dX = (da * self.diff_actFun(self.a)).dot(self.W.T)
+        self.dW = self.X.T.dot(da * (self.diff_actFun(self.z)))
+        self.db = np.ones(num_examples).dot(da * (self.diff_actFun(self.z)))
+        self.dX = (da * self.diff_actFun(self.z)).dot(self.W.T)
 
 class DeepNeuralNetwrok(three_layer_neural_network.NeuralNetwork):
     

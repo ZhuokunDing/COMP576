@@ -137,8 +137,9 @@ class NeuralNetwork(object):
         data_loss = -(y_onehot * np.log(self.probs)).sum()
 
         # Add regulatization term to loss (optional)
-        data_loss += self.reg_lambda / 2 * (np.sum(np.square(self.W1)) + np.sum(np.square(self.W2)))
-        return (1. / num_examples) * data_loss
+        reg = self.reg_lambda / 2 * (np.sum(np.square(self.W1)) + np.sum(np.square(self.W2)))
+        # data_loss += reg
+        return (1. / num_examples) * data_loss, (1. / num_examples) * reg
 
     def predict(self, X):
         '''
@@ -160,10 +161,10 @@ class NeuralNetwork(object):
         # IMPLEMENT YOUR BACKPROP HERE
         num_examples = len(X)
         y_onehot = np.stack((y, 1-y), -1)
-        dW2 = np.dot(self.a1.T, (self.probs - y_onehot))
+        dW2 = self.a1.T.dot(self.probs - y_onehot)
         db2 = np.ones(num_examples).T.dot(self.probs - y_onehot)
-        dW1 = X.T.dot((self.probs - y_onehot).dot(self.W2.T) * self.diff_actFun(self.a1, self.actFun_type))
-        db1 = np.ones(num_examples).T.dot((self.probs - y_onehot).dot(self.W2.T) * (self.diff_actFun(self.a1, self.actFun_type)))
+        dW1 = X.T.dot((self.probs - y_onehot).dot(self.W2.T) * self.diff_actFun(self.z1, self.actFun_type))
+        db1 = np.ones(num_examples).T.dot((self.probs - y_onehot).dot(self.W2.T) * (self.diff_actFun(self.z1, self.actFun_type)))
         return dW1, dW2, db1, db2
 
     def fit_model(self, X, y, epsilon=0.01, num_passes=20000, print_loss=True):
@@ -194,7 +195,8 @@ class NeuralNetwork(object):
             # Optionally print the loss.
             # This is expensive because it uses the whole dataset, so we don't want to do it too often.
             if print_loss and i % 1000 == 0:
-                print("Loss after iteration %i: %f" % (i, self.calculate_loss(X, y)))
+                print("Loss after iteration %i: data_loss:%f reg_loss:%f" % (i, *self.calculate_loss(X, y)))
+                
                 
 
     def visualize_decision_boundary(self, X, y):
