@@ -1,8 +1,11 @@
-import three_layer_neural_network
+from three_layer_neural_network import NeuralNetwork
 import numpy as np
 
 
 def with_type(fn, type):
+    '''
+    Helper funtion to fix the type parameter in an activation function.
+    '''
     def wrapper(*args, **kwargs):
         return fn(type=type, *args, **kwargs)
     return wrapper
@@ -40,14 +43,14 @@ class Layer():
     
     def backprop(self, da):
         '''
-        calculate dL/dW and dL/dX given dL/da
+        calculate dL/db, dL/dW and dL/dX given dL/da
         '''
         num_examples = len(self.X)
         self.dW = self.X.T.dot(da * (self.diff_actFun(self.z)))
         self.db = np.ones(num_examples).dot(da * (self.diff_actFun(self.z)))
         self.dX = (da * self.diff_actFun(self.z)).dot(self.W.T)
 
-class DeepNeuralNetwrok(three_layer_neural_network.NeuralNetwork):
+class DeepNeuralNetwrok(NeuralNetwork):
     
     def __init__(self, n_hidden, input_dim, hidden_dim, output_dim, actFun_type='tanh', reg_lambda=0.01, seed=0):
         '''
