@@ -69,7 +69,8 @@ def max_pool_2x2(x):
 
 def main():
     # Specify training parameters
-    result_dir = './results/' # directory where the results from the training are saved
+    ts = time.strftime("%Y%m%d-%H%M%S")
+    result_dir = './results/tensorboard/' + ts # directory where the results from the training are saved
     max_step = 5500 # the maximum iterations. After max_step iterations, the training will stop no matter what
 
     start_time = time.time() # start timing
@@ -113,13 +114,19 @@ def main():
     # FILL IN THE FOLLOWING CODE TO SET UP THE TRAINING
 
     # setup training
-    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]), name='CrossEntropyLoss')
     train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
 
     # Add a scalar summary for the snapshot loss.
     tf.summary.scalar(cross_entropy.op.name, cross_entropy)
+    tf.summary.scalar('conv1_weight_mean', tf.reduce_mean(W_conv1))
+    tf.summary.scalar('conv1_weight_max', tf.reduce_max(W_conv1))
+    tf.summary.scalar('conv1_weight_min', tf.reduce_min(W_conv1))
+    tf.summary.scalar('conv2_weight_mean', tf.reduce_mean(W_conv2))
+    tf.summary.scalar('conv2_weight_max', tf.reduce_max(W_conv2))
+    tf.summary.scalar('conv2_weight_min', tf.reduce_min(W_conv2))
     # Build the summary operation based on the TF collection of Summaries.
     summary_op = tf.summary.merge_all()
 

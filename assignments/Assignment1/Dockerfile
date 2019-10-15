@@ -1,5 +1,14 @@
 FROM tensorflow/tensorflow:1.14.0-gpu-py3
 
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update &&\
+    apt-get install -y git \
+                       tzdata &&\
+    pip install --upgrade pip &&\
+    apt-get clean &&\
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+
 # Install Jupyter lab
 WORKDIR /src
 
