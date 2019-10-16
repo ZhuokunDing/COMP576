@@ -133,7 +133,7 @@ class NeuralNetwork(object):
         # Calculating the loss
 
         # YOU IMPLEMENT YOUR CALCULATION OF THE LOSS HERE
-        y_onehot = np.stack((y, 1-y), -1)
+        y_onehot = np.stack((1-y, y), -1)
         data_loss = -(y_onehot * np.log(self.probs)).sum()
 
         # Add regulatization term to loss (optional)
@@ -160,7 +160,7 @@ class NeuralNetwork(object):
 
         # IMPLEMENT YOUR BACKPROP HERE
         num_examples = len(X)
-        y_onehot = np.stack((y, 1-y), -1)
+        y_onehot = np.stack((1-y, y), -1)
         dW2 = self.a1.T.dot(self.probs - y_onehot)
         db2 = np.ones(num_examples).T.dot(self.probs - y_onehot)
         dW1 = X.T.dot((self.probs - y_onehot).dot(self.W2.T) * self.diff_actFun(self.z1, self.actFun_type))
