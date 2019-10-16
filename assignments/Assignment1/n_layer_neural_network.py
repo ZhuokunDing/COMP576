@@ -100,7 +100,7 @@ class DeepNeuralNetwrok(NeuralNetwork):
         :param y: given labels
         '''
         # calculate the dw for the last layer
-        y_onehot = np.stack((y, 1-y), -1)
+        y_onehot = np.stack((1-y, y), -1)
         self.dW_out = self.layers[-1].a.T.dot(self.probs - y_onehot)
         da = (self.probs - y_onehot).dot(self.W_out.T)
 
@@ -119,7 +119,7 @@ class DeepNeuralNetwrok(NeuralNetwork):
         num_examples = len(X)
         self.feedforward(X)
         # Calculating the loss
-        y_onehot = np.stack((y, 1-y), -1)
+        y_onehot = np.stack((1-y, y), -1)
         data_loss = -(y_onehot * np.log(self.probs)).sum()
 
         # Add regulatization term to loss (optional)
