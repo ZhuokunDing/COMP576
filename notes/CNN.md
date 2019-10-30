@@ -48,3 +48,27 @@ Data dependent initializations could help a lot for some non-convex machine lear
 
 ### SGD
 
+## Annealing Learning Rate
+
+http://cs231n.github.io/neural-networks-3/#sgd
+
+## Regularization
+
+### Drop out
+
+set a subset of neurons to zero in the forward pass. Avoiding overfit by reducing numbers of parameters. 
+
+Another interpretation is that by drop out, we are actually training a large ensemble of models. Each binary mask is one model and trained on only ~one datapoint.
+
+Drop out should behavior differently during training and test.
+
+### Batch Norm
+
+## Hyperparameter Optimization
+
+* network architecture
+* learning rate, decay schedule, update type
+* regularization
+
+
+
