@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 import torch
 
 from torch.utils.tensorboard import SummaryWriter
-writer = SummaryWriter('runs')
+writer = SummaryWriter('results/runs')
 
 class LeNet(nn.Module):
     def __init__(self):
