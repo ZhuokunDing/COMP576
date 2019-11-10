@@ -53,15 +53,15 @@ def load_data():
     for iclass in range(0, nclass):
         for isample in range(0, ntrain):
             path = './data/CIFAR10/Train/%d/Image%05d.png' % (iclass,isample)
-            im = misc.imread(path); # 28 by 28
-            im = im.astype(float)/255
+            im = plt.imread(path); # 28 by 28
+            im = im.astype(float)
             itrain += 1
             Train[itrain,0,:,:] = im
             LTrain[itrain] = iclass
         for isample in range(0, ntest):
             path = './data/CIFAR10/Test/%d/Image%05d.png' % (iclass,isample)
-            im = misc.imread(path); # 28 by 28
-            im = im.astype(float)/255
+            im = plt.imread(path); # 28 by 28
+            im = im.astype(float)
             itest += 1
             Test[itest,0,:,:] = im
             LTest[itest] = iclass 
@@ -73,6 +73,7 @@ def accuracy(net, imgs, labels):
         net.eval()
         ys = net(imgs)
         correct = ys.argmax(dim=1) == labels
+        net.train()
     return correct.float().mean()
 
 def add_all(writer, var, var_name, iter_n):
@@ -143,6 +144,3 @@ def train_net(Train, LTrain, Test, LTest, lr, momentum, report=20, writer=writer
                 add_all(writer, net.conv2_act, 'conv2_activation', epoch * nsamples + (i+1)*batchsize)
 
     return net
-
-
-    
